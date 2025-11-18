@@ -3818,12 +3818,8 @@ GSTexture12* GSDevice12::SetupPrimitiveTrackingDATE(GSHWDrawConfig& config, Pipe
 void GSDevice12::RenderHW(GSHWDrawConfig& config)
 {
 	// Destination Alpha Setup
+	const bool stencil_DATE = (config.destination_alpha == GSHWDrawConfig::DestinationAlphaMode::Stencil);
 	const bool stencil_DATE_One = config.destination_alpha == GSHWDrawConfig::DestinationAlphaMode::StencilOne;
-	const bool stencil_DATE = (config.destination_alpha == GSHWDrawConfig::DestinationAlphaMode::Stencil || stencil_DATE_One);
-
-	// TODO: Backport from vk.
-	if (stencil_DATE_One)
-		config.ps.date = 0;
 
 	GSTexture12* colclip_rt = static_cast<GSTexture12*>(g_gs_device->GetColorClipTexture());
 	GSTexture12* draw_rt = static_cast<GSTexture12*>(config.rt);
@@ -3874,7 +3870,8 @@ void GSDevice12::RenderHW(GSHWDrawConfig& config)
 		}
 	}
 
-	if (stencil_DATE)
+	const bool multidraw_fb_copy = m_features.multidraw_fb_copy && (config.require_one_barrier || config.require_full_barrier);
+	if (stencil_DATE || (stencil_DATE_One && !multidraw_fb_copy))
 		SetupDATE(draw_rt, config.ds, config.datm, config.drawarea);
 
 	// stream buffer in first, in case we need to exec
@@ -3996,6 +3993,16 @@ void GSDevice12::RenderHW(GSHWDrawConfig& config)
 	// Begin render pass if new target or out of the area.
 	if (!m_in_render_pass)
 	{
+		// DX12 equivalent of vkCmdClearAttachments for StencilOne
+		if (stencil_DATE_One && multidraw_fb_copy)
+		{
+			// Make sure the DSV is in writeable state
+			draw_ds->TransitionToState(D3D12_RESOURCE_STATE_DEPTH_WRITE);
+
+			D3D12_RECT rect = { config.drawarea.left, config.drawarea.top, config.drawarea.left + config.drawarea.width(), config.drawarea.top + config.drawarea.height()};
+			GetCommandList()->ClearDepthStencilView(draw_ds->GetWriteDescriptor(), D3D12_CLEAR_FLAG_STENCIL, 0.0f, 1, 1, &rect);
+		}
+
 		GSVector4 clear_color = draw_rt ? draw_rt->GetUNormClearColor() : GSVector4::zero();
 		if (pipe.ps.colclip_hw)
 		{
@@ -4006,9 +4013,9 @@ void GSDevice12::RenderHW(GSHWDrawConfig& config)
 			draw_rt ? D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE : D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_NO_ACCESS,
 			GetLoadOpForTexture(draw_ds),
 			draw_ds ? D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_PRESERVE : D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_NO_ACCESS,
-			stencil_DATE ? D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_PRESERVE :
+			(stencil_DATE || (stencil_DATE_One && !multidraw_fb_copy)) ? D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_PRESERVE :
 						   D3D12_RENDER_PASS_BEGINNING_ACCESS_TYPE_NO_ACCESS,
-			stencil_DATE ? D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_DISCARD :
+			(stencil_DATE || (stencil_DATE_One && !multidraw_fb_copy)) ? D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_DISCARD :
 						   D3D12_RENDER_PASS_ENDING_ACCESS_TYPE_NO_ACCESS,
 			clear_color, draw_ds ? draw_ds->GetClearDepth() : 0.0f, 1);
 	}
