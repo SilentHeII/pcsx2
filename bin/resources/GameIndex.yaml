@@ -30564,6 +30564,9 @@ SLES-82030:
     halfPixelOffset: 5 # Fixes shadow positioning.
     autoFlush: 2 # Makes the shadow monsters appear.
     nativeScaling: 2 # Aligns post processing and bloom.
+  memcardFilters: # Reads Shadow Hearts for extra items.
+    - "SLES-50677"
+    - "SLES-50822"
 SLES-82031:
   name: "Shadow Hearts - Covenant [Disc 2 of 2]"
   region: "PAL-M3"
@@ -30571,8 +30574,10 @@ SLES-82031:
     halfPixelOffset: 5 # Fixes shadow positioning.
     autoFlush: 2 # Makes the shadow monsters appear.
     nativeScaling: 2 # Aligns post processing and bloom.
-  memcardFilters:
+  memcardFilters: # Reads Shadow Hearts for extra items.
     - "SLES-82030"
+    - "SLES-50677"
+    - "SLES-50822"
 SLES-82032:
   name: "Metal Gear Solid 3 - Snake Eater"
   region: "PAL-G"
@@ -58824,6 +58829,9 @@ SLPS-25317:
     halfPixelOffset: 5 # Fixes shadow positioning.
     autoFlush: 2 # Makes the shadow monsters appear.
     nativeScaling: 2 # Aligns post processing and bloom.
+   memcardFilters: # Reads Shadow Hearts for extra items.
+    - "SLPS-25041"
+    - "SLPS-73418"
 SLPS-25318:
   name: "シャドウハーツⅡ [DXパック] [ディスク2/2]"
   name-sort: "しゃどうはーつ2 [DXぱっく] [でぃすく2/2]"
@@ -58835,6 +58843,8 @@ SLPS-25318:
     nativeScaling: 2 # Aligns post processing and bloom.
   memcardFilters:
     - "SLPS-25317"
+    - "SLPS-25041"
+    - "SLPS-73418"
 SLPS-25319:
   name: "ケロケロキング スーパーDX"
   name-sort: "けろけろきんぐ すーぱーDX"
@@ -58913,6 +58923,9 @@ SLPS-25334:
     halfPixelOffset: 5 # Fixes shadow positioning.
     autoFlush: 2 # Makes the shadow monsters appear.
     nativeScaling: 2 # Aligns post processing and bloom.
+  memcardFilters:
+    - "SLPS-25041"
+    - "SLPS-73418"
 SLPS-25335:
   name: "シャドウハーツⅡ [通常版] [ディスク2/2]"
   name-sort: "しゃどうはーつ2 [つうじょうばん] [でぃすく2/2]"
@@ -58924,6 +58937,8 @@ SLPS-25335:
     nativeScaling: 2 # Aligns post processing and bloom.
   memcardFilters:
     - "SLPS-25334"
+    - "SLPS-25041"
+    - "SLPS-73418"
 SLPS-25336:
   name: "バスランディング3 [Sammy best] [つりコン2+ 同梱版]"
   name-sort: "ばすらんでぃんぐ3 [Sammy best] [つりこん2 どうこんばん]"
@@ -63221,6 +63236,9 @@ SLPS-73214:
     halfPixelOffset: 5 # Fixes shadow positioning.
     autoFlush: 2 # Makes the shadow monsters appear.
     nativeScaling: 2 # Aligns post processing and bloom.
+  memcardFilters:
+    - "SLPS-25041"
+    - "SLPS-73418"
 SLPS-73215:
   name: "シャドウハーツⅡ ディレクターズカット [PlayStation2 the Best] [ディスク2/2]"
   name-sort: "しゃどうはーつ2 でぃれくたーずかっと [PlayStation2 the Best] [でぃすく2/2]"
@@ -63232,6 +63250,8 @@ SLPS-73215:
     nativeScaling: 2 # Aligns post processing and bloom.
   memcardFilters:
     - "SLPS-73214"
+    - "SLPS-25041"
+    - "SLPS-73418"
 SLPS-73216:
   name: "マグナカルタ [PlayStation2 the Best]"
   name-sort: "まぐなかるた [PlayStation2 the Best]"
@@ -69295,6 +69315,8 @@ SLUS-21041:
     halfPixelOffset: 5 # Fixes shadow positioning.
     autoFlush: 2 # Makes the shadow monsters appear.
     nativeScaling: 2 # Aligns post processing and bloom.
+   memcardFilters: # Reads Shadow Hearts for extra items.
+    - "SLUS-20347"
 SLUS-21042:
   name: "Darkwatch"
   region: "NTSC-U"
@@ -69313,8 +69335,9 @@ SLUS-21044:
     halfPixelOffset: 5 # Fixes shadow positioning.
     autoFlush: 2 # Makes the shadow monsters appear.
     nativeScaling: 2 # Aligns post processing and bloom.
-  memcardFilters:
+   memcardFilters: # Reads Shadow Hearts for extra items.
     - "SLUS-21041"
+    - "SLUS-20347"
 SLUS-21045:
   name: "Conflict - Vietnam"
   region: "NTSC-U"
